@@ -5,6 +5,7 @@ const organizationRouter = require('./routes/organization.routes')
 const locationRouter = require('./routes/location.routes')
 const infoBlockRouter = require('./routes/info-block.routes')
 const mediaRouter = require('./routes/media.routes')
+const transitionRouter = require('./routes/transition.routes')
 
 const app = express()
 
@@ -14,6 +15,7 @@ app.use('/api', organizationRouter)
 app.use('/api', locationRouter)
 app.use('/api', infoBlockRouter)
 app.use('/api', mediaRouter)
+app.use('/api', transitionRouter)
 
 const PORT = process.env.PORT
 
