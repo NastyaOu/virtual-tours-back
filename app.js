@@ -3,6 +3,7 @@ const express = require('express')
 const cors = require('cors')
 const organizationRouter = require('./routes/organization.routes')
 const locationRouter = require('./routes/location.routes')
+const infoBlockRouter = require('./routes/info-block.routes')
 
 const app = express()
 
@@ -10,6 +11,7 @@ app.use(cors())
 app.use(express.json())
 app.use('/api', organizationRouter)
 app.use('/api', locationRouter)
+app.use('/api', infoBlockRouter)
 
 const PORT = process.env.PORT
 
