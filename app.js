@@ -13,15 +13,17 @@ const app = express()
 
 app.use(cors())
 app.use(express.json())
+app.use('/api/auth', authRouter)
 app.use('/api', organizationRouter)
 app.use('/api', locationRouter)
 app.use('/api', authMiddleware, infoBlockRouter)
 app.use('/api', authMiddleware, mediaRouter)
 app.use('/api', authMiddleware, transitionRouter)
-app.use('/api/auth', authRouter)
 
 const PORT = process.env.PORT
 
 app.listen(PORT, error => {
-    error ? console.log(`Error starting server ${error}`) : console.log(`Server started at ${PORT}`)
+	error
+		? console.log(`Error starting server ${error}`)
+		: console.log(`Server started at ${PORT}`)
 })
