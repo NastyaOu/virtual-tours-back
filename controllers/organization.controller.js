@@ -54,31 +54,36 @@ class OrganizationController {
 	async updateOrganization(req, res) {
 		const id = req.params.id
 		const { name, description, history } = req.body
-		const image = req.file.filename
+		let image
+		if (req.file) image = req.file.filename
 
 		const organization = await db.query(
 			`SELECT * FROM public."Organization" WHERE "idOrganization" = $1`,
 			[id]
 		)
 
-		const prevImage = organization.rows[0].image
+		if (image) {
+			const prevImage = organization.rows[0].image
 
-		fs.unlink(`public/${prevImage}`, err => {
-			if (err) throw err
-		})
+			fs.unlink(`public/${prevImage}`, err => {
+				if (err) throw err
+			})
+		}
 
 		const updatedOrganization = await db.query(
 			`UPDATE public."Organization" SET "name" = $2, "description" = $3${
 				image ? ', "image" = $4' : ''
 			} WHERE "idOrganization" = $1 RETURNING *`,
-			[id, name, description, image]
+			image ? [id, name, description, image] : [id, name, description]
 		)
 
 		await db.query(`DELETE FROM public."History" WHERE "idOrganization" = $1`, [
 			id,
 		])
 
-		history.forEach(async historyElement => {
+		const historyArray = JSON.parse(history)
+
+		historyArray.forEach(async historyElement => {
 			const newHistory = await db.query(
 				`INSERT INTO public."History" (text, "idOrganization") VALUES ($1, $2)`,
 				[historyElement, id]
