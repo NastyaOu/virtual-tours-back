@@ -7,6 +7,8 @@ const infoBlockRouter = require('./routes/info-block.routes')
 const mediaRouter = require('./routes/media.routes')
 const transitionRouter = require('./routes/transition.routes')
 const authRouter = require('./routes/auth.routes')
+const staffRouter = require('./routes/staff.routes')
+
 const authMiddleware = require('./middlewares/auth.middleware')
 
 const app = express()
@@ -20,6 +22,7 @@ app.use('/api', locationRouter)
 app.use('/api', authMiddleware, infoBlockRouter)
 app.use('/api', authMiddleware, mediaRouter)
 app.use('/api', authMiddleware, transitionRouter)
+app.use('/api', authMiddleware, staffRouter)
 
 const PORT = process.env.PORT
 

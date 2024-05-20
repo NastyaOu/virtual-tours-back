@@ -6,17 +6,11 @@ const router = new Router()
 
 router.post(
 	'/location/:locationId/transition',
-	authMiddleware,
 	transitionController.createTransition
 )
-router.put(
-	'/transition/:transitionId',
-	authMiddleware,
-	transitionController.updateTransition
-)
+router.put('/transition/:transitionId', transitionController.updateTransition)
 router.delete(
 	'/transition/:transitionId',
-	authMiddleware,
 	transitionController.deleteTransition
 )
 
