@@ -53,24 +53,27 @@ class LocationController {
 	async updateLocation(req, res) {
 		const locationId = req.params.locationId
 		const { name } = req.body
-		const image = req.file.filename
+		let image
+		if (req.file) image = req.file.filename
 
 		const location = await db.query(
 			`SELECT * FROM public."Location" WHERE "idLocation" = $1`,
 			[locationId]
 		)
 
-		const prevImage = location.rows[0].image
+		if (image) {
+			const prevImage = location.rows[0].image
 
-		fs.unlink(`public/${prevImage}`, err => {
-			if (err) throw err
-		})
+			fs.unlink(`public/${prevImage}`, err => {
+				if (err) throw err
+			})
+		}
 
 		const updatedLocation = await db.query(
 			`UPDATE public."Location" SET "name" = $2${
 				image ? ', "image" = $3' : ''
 			} WHERE "idLocation" = $1 RETURNING *`,
-			[locationId, name, image]
+			image ? [locationId, name, image] : [locationId, name]
 		)
 
 		res.status(200).json(updatedLocation.rows[0])
