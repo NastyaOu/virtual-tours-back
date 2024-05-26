@@ -20,9 +20,9 @@ const mediaFilter = function (req, file, cb) {
 	const fileName = file.originalname
 	const ext = fileName.slice(fileName.length - 4, fileName.length)
 
-	const isImgExtValid = ext !== '.png' && ext !== '.jpg'
+	const isImgExtValid = ext === '.png' || ext === '.jpg'
 
-	const isVideoExtValid = ext !== '.mp4'
+	const isVideoExtValid = ext === '.mp4'
 
 	if (req.body.type === 'photo' && isImgExtValid) cb(null, true)
 	else if (req.body.type === 'video' && isVideoExtValid) cb(null, true)
