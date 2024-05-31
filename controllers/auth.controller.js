@@ -28,7 +28,7 @@ class AuthController {
 
         if (!isPasswordValid) return res.status(400).json("Неверный пароль")
 
-        const token = jwt.sign({id: user.rows[0].id}, JWT_SECRET, {expiresIn: '24h'})
+        const token = jwt.sign({id: user.rows[0].id}, JWT_SECRET)
 
         return res.status(200).json({
             token
