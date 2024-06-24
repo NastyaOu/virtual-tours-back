@@ -1,13 +1,17 @@
 const multer = require('multer')
+
+// описывает куда будут улетать пришедшие файлы и под каким именем
 const storage = multer.diskStorage({
 	destination: function (req, file, cb) {
 		cb(null, 'public')
 	},
+	// имя формируется текщей датой и оригинальным названием файла
 	filename: function (req, file, cb) {
 		cb(null, Date.now().toString() + '-' + file.originalname)
 	},
 })
 
+// смотрит на имя файла, вычисляет расширение(4 символа с конца)
 const imageFilter = function (req, file, cb) {
 	const fileName = file.originalname
 	const ext = fileName.slice(fileName.length - 4, fileName.length)

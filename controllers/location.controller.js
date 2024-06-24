@@ -1,13 +1,16 @@
 const db = require('../db')
 const fs = require('fs')
 
+// всякая функция из контроллера принимает два параметра req(запрос), res(ответ)
 class LocationController {
 	async getLocations(req, res) {
+		// из запроса наши функции могут доставать необходимые параметры или тело запроса
 		const organizationId = req.params.organizationId
 		const locations = await db.query(
 			`SELECT * FROM public."Location" WHERE "idOrganization" = $1`,
 			[organizationId]
 		)
+		// в ответ оправили ответ со статусов 200 и в его тело зашили json, который содержит все локации
 		res.status(200).json(locations.rows)
 	}
 
@@ -40,6 +43,7 @@ class LocationController {
 	async createLocation(req, res) {
 		const organizationId = req.params.organizationId
 		const { name } = req.body
+		// 
 		const image = req.file.filename
 
 		const newLocation = await db.query(
